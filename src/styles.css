@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+
+  /* The teal comes from The Alcove's logo; marigold and chili warm it up. */
+  --color-ink: #0f1f1d;
+  --color-ink-800: #172b28;
+  --color-cream: #f7f0e4;
+  --color-sand: #efe3cf;
+  --color-alcove-300: #9ad3c8;
+  --color-alcove-400: #63b5a8;
+  --color-alcove-500: #3f8f86;
+  --color-alcove-700: #24615b;
+  --color-marigold: #f2b441;
+  --color-chili: #c2492a;
+
+  --animate-marquee: marquee 60s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+  }
+
+  ::selection {
+    @apply bg-marigold text-ink;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-marigold;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-[0.95rem] font-semibold whitespace-nowrap transition duration-200 active:scale-[0.98];
+  }
+
+  .btn-primary {
+    @apply bg-marigold text-ink shadow-lg shadow-marigold/25 hover:-translate-y-0.5 hover:bg-[#f7c463];
+  }
+
+  /* Outline button for dark backgrounds. */
+  .btn-ghost {
+    @apply border border-cream/25 text-cream hover:border-cream/60 hover:bg-cream/10;
+  }
+
+  .btn-dark {
+    @apply bg-ink text-cream hover:-translate-y-0.5 hover:bg-ink-800;
+  }
+
+  /* Outline button for light backgrounds. */
+  .btn-outline {
+    @apply border border-ink/20 text-ink hover:border-ink/50 hover:bg-ink/5;
+  }
+
+  .eyebrow {
+    @apply flex items-center gap-3 text-xs font-bold tracking-[0.24em] uppercase;
+
+    &::before {
+      content: "";
+      @apply h-px w-8 bg-current opacity-60;
+    }
+  }
+
+  .section-title {
+    @apply font-display text-[2.6rem] leading-[1.02] font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl;
+  }
+
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-marigold focus:px-5 focus:py-3 focus:font-semibold focus:text-ink;
+  }
+
+  /* Film-grain texture for the dark sections. Needs a positioned, isolated parent. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Scroll reveal (see ui/reveal.ts). */
+  .js [data-reveal] {
+    transition:
+      opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+      translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .js [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
